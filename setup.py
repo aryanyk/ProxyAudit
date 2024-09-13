@@ -5,12 +5,17 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="proxyaudit",
-    version="0.1",
+    version="0.4",
     packages=find_packages(),
-    install_requires=[],
+    install_requires=[
+        "asyncio",
+        "aiohttp",
+        "urllib3"
+        
+        ],
     author="Aryan Khandhadiya",
     author_email="aryanyk562@gmail.com",
-    description="A package to fetch and check the working HTTP proxies from a list of proxies",
+    description="A package to fetch and check the working HTTP,HTTPS,SOCKS4,SOCKS5 proxies from a list of proxies",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/aryanyk/proxyaudit",
