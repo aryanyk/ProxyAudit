@@ -1,4 +1,4 @@
-```markdown
+
 # 🚀 ProxyAudit
 
 **ProxyAudit** is a high-performance, concurrent proxy validation library that scrapes public proxy feeds and filters only the currently working proxies by protocol.
