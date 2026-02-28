@@ -1,45 +1,53 @@
-Open Source Library for scraping public proxies available to be used within the project for various purposes.
+Open-source library for scraping public proxies and validating only the currently working ones.
 
-This Libray fetches open available proxies and sorts them according to the currently working and removes useless working proxies . Running this script timely ensures good quality http proxies 
+`proxyaudit` fetches proxies from a URL/API, tests them concurrently, and stores working proxies by protocol.
 
-How to Use :
-Before using it please install dependencies if it is not installed automatically:
-```python
+## Install
 
-import asyncio
-import aiohttp
-import urllib3
-import socket
-
-```
-Once this dependencies installed go to any free proxy websites. Some examples sites are : 
-
-1.[GeoNode Free proxy List]( https://geonode.com/free-proxy-list "Link Title")
-
-2.[ProxyScrape Free proxy List]( https://proxyscrape.com/free-proxy-list "Link Title")
-
-Go to this websites and copy Load proxies through Url or API
-
-Now 
-
+```bash
 pip install proxyaudit
+```
+
+## Quick start
 
 ```python
-
-
 from proxyaudit import run_proxy_check
 
-proxyurl="Url got from website paste here"
-
-run_proxy_check(url,["http", "https","socks4","socks5"])
-
+proxy_url = "https://example.com/proxy-list.txt"
+working = run_proxy_check(proxy_url, ["http", "https", "socks4", "socks5"])
+print(working["http"][:5])
 ```
-In the allowed Protocol array you can also pass one argument like: ["http"]
 
-## Allowed Protocol
-http
-https
-socks4
-socks5
+## Async usage (for notebooks / async apps)
 
-Done a txt file will be generated with all the working proxies 
+```python
+from proxyaudit import run_proxy_check_async
+
+working = await run_proxy_check_async(
+    "https://example.com/proxy-list.txt",
+    ["http", "https"],
+    timeout=8,
+    concurrency=200,
+)
+```
+
+## What is validated
+
+- Supports `http`, `https`, `socks4`, `socks5`.
+- Accepts either `protocol://ip:port` or plain `ip:port` input from proxy feeds.
+- Tests proxies against a target URL (default: `http://www.google.com`).
+- Saves successful proxies into:
+  - `http.txt`
+  - `https.txt`
+  - `socks4.txt`
+  - `socks5.txt`
+
+## API
+
+### `run_proxy_check(proxy_list_url, allowed_protocols, test_url="http://www.google.com", timeout=5, concurrency=100)`
+
+Synchronous API for scripts. Returns a dictionary keyed by protocol with working proxies.
+
+### `run_proxy_check_async(proxy_list_url, allowed_protocols, test_url="http://www.google.com", timeout=5, concurrency=100)`
+
+Async API for running inside an existing event loop.
